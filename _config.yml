@@ -6,12 +6,12 @@ menu:
 
 # SubNav
 subnav:
-  github: "#"
-  weibo: "#"
-  rss: "#"
+  github: "https://github.com/kouyalong"
+  weibo: "http://weibo.com/2928398943/profile"
+  #rss: "#"
   zhihu: "#"
   #douban: "#"
-  #mail: "#"
+  mail: "kouyalong911@foxmail.com"
   #facebook: "#"
   #google: "#"
   #twitter: "#"
@@ -37,10 +37,10 @@ open_in_new: false
 
 # Miscellaneous
 google_analytics: ''
-favicon: /favicon.png
+favicon: favicon.jpg
 
 #你的头像url
-avatar:
+avatar: favicon.jpg
 
 #是否开启分享
 share_jia: true
