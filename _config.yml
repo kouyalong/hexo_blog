@@ -4,10 +4,11 @@
 
 # Site
 title: Quinlan Blog
-subtitle:
-description:
+subtitle: python programmer
+description: Quinlan Blog Programmer
 author: Quinlan
-language:
+email: kouyalong911@foxmail.com
+language: zh-CN
 timezone:
 
 # URL
