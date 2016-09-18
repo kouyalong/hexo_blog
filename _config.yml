@@ -7,12 +7,12 @@ title: Quinlan Blog
 subtitle: python programmer
 description: Quinlan Blog Programmer
 author: Quinlan
-avatar: "/uploads/10396045.jpg"
+avatar: "source/uploads/10396045.jpg"
 email: kouyalong911@foxmail.com
 language: zh-CN
 timezone:
 
-favicon: "/uploads/10396045.jpg"
+favicon: "source/uploads/10396045.jpg"
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: http://yoursite.com
