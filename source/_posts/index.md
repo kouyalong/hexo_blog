@@ -20,5 +20,5 @@ tags: 普通
 ### Ssh 远程登录
 
 
-### ==Hive==
+### Hive
 + Hadoop的数据仓库
