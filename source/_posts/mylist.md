@@ -8,9 +8,9 @@ tags: 重要
 > 这里我主要实现了一下几个功能: append, pop, index, length写的比较乱
 > 思路上大致就是
 
-* 设计每个节点的属性, 最简单的是每个几点只保存当前的值和指向下一个节点点指针, 我这里增加了当前节点的index, 以及指向前一个节点的指针
-* 设计链表的操作, append, pop, index, length
-* 可以在此基础上, 再实现insert, extend 等操作
+> * 设计每个节点的属性, 最简单的是每个几点只保存当前的值和指向下一个节点点指针, 我这里增加了当前节点的index, 以及指向前一个节点的指针
+> * 设计链表的操作, append, pop, index, length
+> * 可以在此基础上, 再实现insert, extend 等操作
 
 ``````
 #!/usr/bin/env python
