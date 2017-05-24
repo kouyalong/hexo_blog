@@ -1,7 +1,7 @@
 layout: python_list_layout
 title: Python list的简单实现
 date: 2017-05-24 17:12:05
-tags: 重要
+tags: 重点
 ---
 ### Python list的简单实现
 
