@@ -12,7 +12,7 @@ tags: 重要
 * 设计链表的操作, append, pop, index, length
 * 可以在此基础上, 再实现insert, extend 等操作
 
-```
+``````
 #!/usr/bin/env python
 # coding: utf-8
 
@@ -146,4 +146,4 @@ if __name__ == '__main__':
     print l.index(0)
     print l.pop(0)
 
-```
+``````
