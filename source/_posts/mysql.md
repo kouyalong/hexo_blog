@@ -25,6 +25,10 @@ INSERT、DELETE、JOIN、SORT、SELECT
 5.union 和 union all
 
 
+# REDIS
+
+
+# MONGO
 
 
 # SQLALCHEMY

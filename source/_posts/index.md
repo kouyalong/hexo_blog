@@ -45,7 +45,9 @@ apt-get install supervisor
 
 ### Ssh 远程登录
 * 创建key 
+ 
 ```
 ssh-keygen -t rsa -C 'your word'
 ```
+
 想了解更多请前往[ssh中文手册](http://linux.chinaunix.net/techdoc/beginner/2010/01/12/1153509.shtml)
