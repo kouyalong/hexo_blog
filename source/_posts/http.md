@@ -5,11 +5,10 @@ tags: 重点
 ---
 
 #### 请求方式
-----
 
 根据HTTP标准, HTTP请求可以使用多种请求方法.
-HTTP1.0定义了三种请求方法: GET, POST 和 HEAD方法。
-HTTP1.1新增了五种请求方法: OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方法。
+HTTP1.0定义了三种请求方法: GET, POST 和 HEAD方法.
+HTTP1.1新增了五种请求方法: OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方法.
 
 * Get
 
@@ -30,8 +29,6 @@ HTTP1.1新增了五种请求方法: OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方�
 
 #### [Session](http://baike.baidu.com/link?url=7iUfdIN-T5IrrqaGndSHxoVZqRzDs8Gp5aFyVBhD5tLQb7zD6kTAN3wdFQfpl0YCr1tysE_dE9p5trpOodPV0K) 和 [Cookie](http://baike.baidu.com/link?url=-U4M-O34JWPr-fvQ9Wh5D0V7eMvP-hsWueRcKFY3tnnkUVioYOpJ8gzMX4sgEYLGT9FBepwQG6D6MJtefeacoK)
 
-----
-
 * Session
     > 在计算机中, 尤其是在网络应用中, 称为"会话控制". session对象存储特定用户会话所需的属性及配置信息
     > session是用于保持状态的基于Web服务器的方法. session允许通过将对象存储在Web服务器的内存中在整个用户会话过程中保持任何对象
@@ -47,7 +44,6 @@ HTTP1.1新增了五种请求方法: OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方�
     * 并且在客户端, 一个浏览器能创建的cookie数量最多为300个, 并且每个不能超过4KB, 每个Web站点能设置的cookie总数不能超过20个
 
 #### [状态码](http://www.runoob.com/http/http-status-codes.html)
-----
 
 当浏览者访问一个网页时, 浏览者的浏览器会向网页所在服务器发出请求. 当浏览器接收并显示网页前, 
 此网页所在的服务器会返回一个包含HTTP状态码的信息头（server header）用以响应浏览器的请求.
