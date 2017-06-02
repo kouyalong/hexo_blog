@@ -270,7 +270,68 @@ class LocalProxy(object):
     """
 ```
 
-#### 应用上下文
+#### wsgi_app
+
+* 第一步：生成request请求对象和请求上下文环境
+* 第二步：请求进入预处理，错误处理及请求转发到响应的过程
+* 第三步：请求分发 dispatch_request
+* 第四步：返回到wsgi_app内部
+
+[示例图](https://martin-upload.b0.upaiyun.com/web/2017/06/bf02aa078b9ba72d9fcda9b3b45125fd.jpeg)
+
+```python
+    def wsgi_app(self, environ, start_response):
+        """The actual WSGI application.  This is not implemented in
+        `__call__` so that middlewares can be applied without losing a
+        reference to the class.  So instead of doing this::
+
+            app = MyMiddleware(app)
+
+        It's a better idea to do this instead::
+
+            app.wsgi_app = MyMiddleware(app.wsgi_app)
+
+        Then you still have the original application object around and
+        can continue to call methods on it.
+
+        .. versionchanged:: 0.7
+           The behavior of the before and after request callbacks was changed
+           under error conditions and a new callback was added that will
+           always execute at the end of the request, independent on if an
+           error occurred or not.  See :ref:`callbacks-and-errors`.
+
+        :param environ: a WSGI environment
+        :param start_response: a callable accepting a status code,
+                               a list of headers and an optional
+                               exception context to start the response
+        """
+        ctx = self.request_context(environ)
+        ctx.push()
+        error = None
+        try:
+            try:
+                response = self.full_dispatch_request()
+            except Exception as e:
+                error = e
+                response = self.make_response(self.handle_exception(e))
+            return response(environ, start_response)
+        finally:
+            if self.should_ignore_error(error):
+                error = None
+            ctx.auto_pop(error)
+
+    def __call__(self, environ, start_response):
+        """Shortcut for :attr:`wsgi_app`."""
+        return self.wsgi_app(environ, start_response)
+```
+
+#### 应用上下文 AppContext
+
+应用上下文会在合适的时间创建和销毁, 它不会在线程中移动, 并且也不会在不同的请求之间共享, 所以它一般用来存储数据库连接信息或者别的东西的最佳位置.
+当`app = Flask(__name__)`构造出一个Flask App的时候, AppContext并不会自动推入到_app_ctx_stack中, 
+如果你使用Flask-SQLAlchemy, 需要写一个离线脚本时候, 你就会知道这其中的坑(RuntimeError). 
+解决的办法是: 在运行离线脚本之前, 先将App的AppContext PUSH到_app_ctx_stack中, `ctx = app.app_context()  ctx.push()`
+但是当我们正常跑Flask服务的时候, 是不需要手动push. 推入部分的逻辑有这样一条：如果发现 _app_ctx_stack 为空，则隐式地推入一个AppContext。
 
 
 ```python
@@ -316,7 +377,11 @@ class AppContext(object):
 ```
 
 
-#### 请求上下文
+#### 请求上下文 RequestContext
+request和session都属于请求上下文
+request 针对的是http请求作为对象
+session 针对的是更多是用户信息作为对象
+
 
 ```python
 
