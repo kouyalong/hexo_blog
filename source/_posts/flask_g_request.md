@@ -277,7 +277,7 @@ class LocalProxy(object):
 * 第三步：请求分发 dispatch_request
 * 第四步：返回到wsgi_app内部
 
-[示例图](https://martin-upload.b0.upaiyun.com/web/2017/06/bf02aa078b9ba72d9fcda9b3b45125fd.jpeg)
+![示例图](https://martin-upload.b0.upaiyun.com/web/2017/06/bf02aa078b9ba72d9fcda9b3b45125fd.jpeg)
 
 ```python
     def wsgi_app(self, environ, start_response):
