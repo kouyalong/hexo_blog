@@ -1,0 +1,718 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="重点," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="MYSQLMySql是一个快速、多线程、多用户的SQL数据库服务器。几乎是免费的，支持正规的SQL查询语言和采用多种数据类型，能对数据进行各种详细的查询等。
+
+Relational Database Management SystemDDL（Data Definition Language）CREATE、ALTER与DROP
+DML（Data Manipulation Language）插，删，改">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql使用心得">
+<meta property="og:url" content="http://blog.micbay.com/2016/11/22/mysql/index.html">
+<meta property="og:site_name" content="Quinlan Blog">
+<meta property="og:description" content="MYSQLMySql是一个快速、多线程、多用户的SQL数据库服务器。几乎是免费的，支持正规的SQL查询语言和采用多种数据类型，能对数据进行各种详细的查询等。
+
+Relational Database Management SystemDDL（Data Definition Language）CREATE、ALTER与DROP
+DML（Data Manipulation Language）插，删，改">
+<meta property="og:image" content="https://martin-upload.b0.upaiyun.com/web/2016/11/3cdb883804bf06eb6c5326317d2fbc60.png">
+<meta property="og:image" content="https://martin-upload.b0.upaiyun.com/web/2016/11/2bc29ffdc76fd28affe82473665cce4c.png">
+<meta property="og:updated_time" content="2017-05-24T09:04:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mysql使用心得">
+<meta name="twitter:description" content="MYSQLMySql是一个快速、多线程、多用户的SQL数据库服务器。几乎是免费的，支持正规的SQL查询语言和采用多种数据类型，能对数据进行各种详细的查询等。
+
+Relational Database Management SystemDDL（Data Definition Language）CREATE、ALTER与DROP
+DML（Data Manipulation Language）插，删，改">
+<meta name="twitter:image" content="https://martin-upload.b0.upaiyun.com/web/2016/11/3cdb883804bf06eb6c5326317d2fbc60.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.micbay.com/2016/11/22/mysql/"/>
+
+
+
+
+
+  <title>Mysql使用心得 | Quinlan Blog</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Quinlan Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">python programmer</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.micbay.com/2016/11/22/mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Quinlan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/source/uploads/10396045.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Quinlan Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Mysql使用心得</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-22T23:16:05+08:00">
+                2016-11-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="MYSQL"><a href="#MYSQL" class="headerlink" title="MYSQL"></a>MYSQL</h1><p>MySql是一个快速、多线程、多用户的SQL数据库服务器。几乎是免费的，支持正规的SQL查询语言和采用多种数据类型，能对数据进行各种详细的查询等。</p>
+<p><img src="https://martin-upload.b0.upaiyun.com/web/2016/11/3cdb883804bf06eb6c5326317d2fbc60.png" alt=""></p>
+<h2 id="Relational-Database-Management-System"><a href="#Relational-Database-Management-System" class="headerlink" title="Relational Database Management System"></a>Relational Database Management System</h2><h4 id="DDL（Data-Definition-Language）"><a href="#DDL（Data-Definition-Language）" class="headerlink" title="DDL（Data Definition Language）"></a>DDL（Data Definition Language）</h4><p>CREATE、ALTER与DROP</p>
+<h4 id="DML（Data-Manipulation-Language）"><a href="#DML（Data-Manipulation-Language）" class="headerlink" title="DML（Data Manipulation Language）"></a>DML（Data Manipulation Language）</h4><p>插，删，改，排，检<br>INSERT、DELETE、JOIN、SORT、SELECT</p>
+<blockquote>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>1.between and 的边界<br>2.通配符：%和_<br>3.limit + offset<br>4.inner join 和 left join<br>5.union 和 union all</p>
+</blockquote>
+<h1 id="REDIS"><a href="#REDIS" class="headerlink" title="REDIS"></a>REDIS</h1><h1 id="MONGO"><a href="#MONGO" class="headerlink" title="MONGO"></a>MONGO</h1><h1 id="SQLALCHEMY"><a href="#SQLALCHEMY" class="headerlink" title="SQLALCHEMY"></a>SQLALCHEMY</h1><p><img src="https://martin-upload.b0.upaiyun.com/web/2016/11/2bc29ffdc76fd28affe82473665cce4c.png" alt=""></p>
+<ul>
+<li><font color="red">SQLAlchemy无法修改表结构，如果需要可以使用SQLAlchemy开发者开源的另外一个软件Alembic来完成</font>
+
+</li>
+</ul>
+<h4 id="1-create-engine"><a href="#1-create-engine" class="headerlink" title="1.create_engine"></a>1.create_engine</h4><p>A.<br>strategy.create的调用，而 strategy 就是 engine 的实现细节. strategy 可以在 create_engine 调用时通过 strategy 参数指定, 目前官方的支持有三种：</p>
+<ul>
+<li>plain, 默认的</li>
+<li>threadlocal, 连接是线程局部的</li>
+<li>mock, 所有的 SQL 语句的执行会使用指定的函数</li>
+</ul>
+<p>B.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- pool_size 连接数</div><div class="line">- max_overflow 最多多几个连接</div><div class="line">- pool_recycle 连接重置周期</div><div class="line">- pool_timeout 连接超时时间</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from sqlalchemy import create_engine</div><div class="line"></div><div class="line"></div><div class="line">def f(sql,*args,**kargs):</div><div class="line">    print sql, args, kargs</div><div class="line"></div><div class="line">s= &apos;mysql://user:password@host:port/database?charset=utf-8&apos;</div><div class="line">engine = create_engine(s, strategy=&apos;mock&apos;, executor=f, echo=False, pool_size=10, max_overflow=5, pool_recycle=3600, pool_timeout=30)</div><div class="line">print engine.execute(&apos;select id from &quot;user&quot;&apos;)</div></pre></td></tr></table></figure>
+<h4 id="2-table"><a href="#2-table" class="headerlink" title="2. table"></a>2. table</h4><p>SQLAlchemy的Delarative<br>A.<br>SQLAlchemy使用 Classic和Modern两种模式 来描述一个表。</p>
+<p>Classic<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">from sqlalchemy import Column, Integer, MetaData, String, Table</div><div class="line">from sqlalchemy.orm import mapper</div><div class="line"></div><div class="line">metadata = MetaData()</div><div class="line"></div><div class="line">user = Table(&apos;users&apos;, metadata,</div><div class="line">            Column(&apos;id&apos;, Integer, primary_key=True),</div><div class="line">            Column(&apos;name&apos;, String(50)),</div><div class="line">            Column(&apos;fullname&apos;, String(50)),</div><div class="line">            Column(&apos;password&apos;, String(12))</div><div class="line">        )</div><div class="line"></div><div class="line"></div><div class="line">class User(object):</div><div class="line">    def __init__(self, name, fullname, password):</div><div class="line">        self.name = name</div><div class="line">        self.fullname = fullname</div><div class="line">        self.password = password</div><div class="line"></div><div class="line">mapper(User, user)</div></pre></td></tr></table></figure></p>
+<p>Modern<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">from sqlalchemy import Column, Integer, MetaData, String</div><div class="line">from sqlalchemy.ext.declarative import declarative_base</div><div class="line"></div><div class="line">Base = declarative_base()</div><div class="line"></div><div class="line"></div><div class="line">class User(Base):</div><div class="line">    __tablename__ = &apos;user&apos;</div><div class="line">    id = Column(Integer, primary_key=True)</div><div class="line">    name =  Column(String(50))</div><div class="line">    fullname = Column(String(50))</div><div class="line">    password = Column(String(12))</div><div class="line"></div><div class="line">    def __init__(self, name, fullname, password):</div><div class="line">        self.name = name</div><div class="line">        self.fullname = fullname</div><div class="line">        self.password = password</div><div class="line"></div><div class="line">    def __repr__(self):</div><div class="line">        return &quot;&lt;User(&apos;%s&apos;,&apos;%s&apos;, &apos;%s&apos;)&gt;&quot; % (self.name, self.fullname, self.password)</div><div class="line">user = User()</div></pre></td></tr></table></figure></p>
+<p>ORM会为所有被映射的表列创建类属性，这些属性是通过Python语言中<a href="http://www.geekfan.net/7862/" target="_blank" rel="external">python描述符</a>机制来实现的。<br>SQLAlchemy 的连接创建是 Lazy 的方式。要对对象实行持久化(Persist) (所谓的持久化就是把对象数据按照映射关系存储入数据库里)</p>
+<h4 id="3-session"><a href="#3-session" class="headerlink" title="3.session"></a>3.session</h4><p>ORM的操作句柄(Handle)被称为会话(Session)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">from contextlib import closing</div><div class="line"></div><div class="line">from sqlalchemy.orm import sessionmaker</div><div class="line"></div><div class="line">Session = sessionmaker()</div><div class="line">Session.configure(bind=engine, autocommit=False, expire_on_commit=True)</div><div class="line">with closing(Session()) as session:</div><div class="line">    user = User()</div><div class="line">    user.name = &apos;test&apos;</div><div class="line">    session.add(user)</div><div class="line">    session.commit()</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/重点/" rel="tag"># 重点</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/18/python_image/" rel="next" title="Python使用PIL破解验证码">
+                <i class="fa fa-chevron-left"></i> Python使用PIL破解验证码
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/24/mylist/" rel="prev" title="Python list的简单实现">
+                Python list的简单实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/source/uploads/10396045.jpg"
+               alt="Quinlan" />
+          <p class="site-author-name" itemprop="name">Quinlan</p>
+           
+              <p class="site-description motion-element" itemprop="description">Quinlan Blog Programmer</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">Tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MYSQL"><span class="nav-number">1.</span> <span class="nav-text">MYSQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Relational-Database-Management-System"><span class="nav-number">1.1.</span> <span class="nav-text">Relational Database Management System</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DDL（Data-Definition-Language）"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">DDL（Data Definition Language）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DML（Data-Manipulation-Language）"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">DML（Data Manipulation Language）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">注意</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#REDIS"><span class="nav-number">2.</span> <span class="nav-text">REDIS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MONGO"><span class="nav-number">3.</span> <span class="nav-text">MONGO</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQLALCHEMY"><span class="nav-number">4.</span> <span class="nav-text">SQLALCHEMY</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-create-engine"><span class="nav-number">4.0.0.1.</span> <span class="nav-text">1.create_engine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-table"><span class="nav-number">4.0.0.2.</span> <span class="nav-text">2. table</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-session"><span class="nav-number">4.0.0.3.</span> <span class="nav-text">3.session</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Quinlan</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
