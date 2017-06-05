@@ -1,0 +1,734 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="重点," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="本文只是记录个人学习Flask上下文的一些理解. 关于上下文的理解和更多的信息, 可以参考最下方的参考文献!Flask 中有两种上下文 请求上下文和应用上下文. 
+Werkzeug 实现的 Local Stack 和 Local Proxy在了解Flask 上下文之前, 必须得先了解Werkzeug.local.Local
+Werkzeug 实现了一个Local类, 类似于ThreadLocal.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask学习笔记第一篇之上下文">
+<meta property="og:url" content="http://blog.micbay.com/2017/06/02/flask_g_request/index.html">
+<meta property="og:site_name" content="Quinlan的博客">
+<meta property="og:description" content="本文只是记录个人学习Flask上下文的一些理解. 关于上下文的理解和更多的信息, 可以参考最下方的参考文献!Flask 中有两种上下文 请求上下文和应用上下文. 
+Werkzeug 实现的 Local Stack 和 Local Proxy在了解Flask 上下文之前, 必须得先了解Werkzeug.local.Local
+Werkzeug 实现了一个Local类, 类似于ThreadLocal.">
+<meta property="og:image" content="https://martin-upload.b0.upaiyun.com/web/2017/06/bf02aa078b9ba72d9fcda9b3b45125fd.jpeg">
+<meta property="og:updated_time" content="2017-06-05T08:35:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flask学习笔记第一篇之上下文">
+<meta name="twitter:description" content="本文只是记录个人学习Flask上下文的一些理解. 关于上下文的理解和更多的信息, 可以参考最下方的参考文献!Flask 中有两种上下文 请求上下文和应用上下文. 
+Werkzeug 实现的 Local Stack 和 Local Proxy在了解Flask 上下文之前, 必须得先了解Werkzeug.local.Local
+Werkzeug 实现了一个Local类, 类似于ThreadLocal.">
+<meta name="twitter:image" content="https://martin-upload.b0.upaiyun.com/web/2017/06/bf02aa078b9ba72d9fcda9b3b45125fd.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.micbay.com/2017/06/02/flask_g_request/"/>
+
+
+
+
+
+  <title>Flask学习笔记第一篇之上下文 | Quinlan的博客</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Quinlan的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Python小白</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.micbay.com/2017/06/02/flask_g_request/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Quinlan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/favicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Quinlan的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Flask学习笔记第一篇之上下文</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-02T13:26:05+08:00">
+                2017-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文只是记录个人学习Flask上下文的一些理解. 关于上下文的理解和更多的信息, 可以参考最下方的参考文献!<br>Flask 中有两种上下文 请求上下文和应用上下文. </p>
+<h4 id="Werkzeug-实现的-Local-Stack-和-Local-Proxy"><a href="#Werkzeug-实现的-Local-Stack-和-Local-Proxy" class="headerlink" title="Werkzeug 实现的 Local Stack 和 Local Proxy"></a>Werkzeug 实现的 Local Stack 和 Local Proxy</h4><p>在了解Flask 上下文之前, 必须得先了解Werkzeug.local.Local</p>
+<p>Werkzeug 实现了一个Local类, 类似于ThreadLocal.</p>
+<p>首先我们看看ThreadLocal. ThreadLocal则是一种特殊的对象, 它的”状态”对线程隔离——也就是说每个线程对一个ThreadLocal对象的修改都不会影响其他线程. </p>
+<p>ThreadLocal的内部实现:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">_local</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="string">""" Thread-local data """</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delattr__</span><span class="params">(self, name)</span>:</span> <span class="comment"># real signature unknown; restored from __doc__</span></div><div class="line">        <span class="string">""" x.__delattr__('name') &lt;==&gt; del x.name """</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self, name)</span>:</span> <span class="comment"># real signature unknown; restored from __doc__</span></div><div class="line">        <span class="string">""" x.__getattribute__('name') &lt;==&gt; x.name """</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, *args, **kwargs)</span>:</span> <span class="comment"># real signature unknown</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line"><span class="meta">    @staticmethod # known case of __new__</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(S, *more)</span>:</span> <span class="comment"># real signature unknown; restored from __doc__</span></div><div class="line">        <span class="string">""" T.__new__(S, ...) -&gt; a new object with type S, a subtype of T """</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span> <span class="comment"># real signature unknown; restored from __doc__</span></div><div class="line">        <span class="string">""" x.__setattr__('name', value) &lt;==&gt; x.name = value """</span></div><div class="line">        <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p>ThreadLocal Demo:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># coding: utf-8</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> threading</div><div class="line"></div><div class="line"></div><div class="line">thread_local = threading.local()</div><div class="line">thread_local.main_id = <span class="number">0</span></div><div class="line"></div><div class="line"><span class="keyword">print</span> thread_local.main_id     <span class="comment"># 主线程里面, 打印结果为0</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppThread</span><span class="params">(threading.Thread)</span>:</span></div><div class="line">    num = <span class="number">0</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_num</span><span class="params">(self, num)</span>:</span></div><div class="line">        self.num = num</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">        thread_local.main_id = self.num</div><div class="line">        <span class="keyword">print</span> thread_local.main_id      <span class="comment"># 在这个线程里面, 修改mian_id值</span></div><div class="line"></div><div class="line"></div><div class="line">app_thread = AppThread()</div><div class="line">app_thread.set_num(<span class="number">4</span>)</div><div class="line">app_thread.start()</div><div class="line"><span class="keyword">print</span> thread_local.main_id      <span class="comment"># 主线程 main_id 没有改变</span></div></pre></td></tr></table></figure>
+<p>Werkzeug.local.Local类</p>
+<ul>
+<li>Werkzeug.local.Local会在Greenlet可用的情况下优先使用Greenlet的ID而不是线程ID以支持Gevent或Eventlet的调度; ThreadLocal只支持多线程调度</li>
+<li>Werkzeug.local.Local实现的<strong>release_local</strong>的方法, 可以被release_local函数释放掉当前线程下的状态, 源码中有Example</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">release_local</span><span class="params">(local)</span>:</span></div><div class="line">    <span class="string">"""Releases the contents of the local for the current context.</span></div><div class="line">    This makes it possible to use locals without a manager.</div><div class="line"></div><div class="line">    Example::</div><div class="line"></div><div class="line">        &gt;&gt;&gt; loc = Local()</div><div class="line">        &gt;&gt;&gt; loc.foo = 42</div><div class="line">        &gt;&gt;&gt; release_local(loc)</div><div class="line">        &gt;&gt;&gt; hasattr(loc, 'foo')</div><div class="line">        False</div><div class="line"></div><div class="line">    With this function one can release :class:`Local` objects as well</div><div class="line">    as :class:`LocalStack` objects.  However it is not possible to</div><div class="line">    release data held by proxies that way, one always has to retain</div><div class="line">    a reference to the underlying local object in order to be able</div><div class="line">    to release it.</div><div class="line"></div><div class="line">    .. versionadded:: 0.6.1</div><div class="line">    """</div><div class="line">    local.__release_local__()</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Local</span><span class="params">(object)</span>:</span></div><div class="line">    __slots__ = (<span class="string">'__storage__'</span>, <span class="string">'__ident_func__'</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        object.__setattr__(self, <span class="string">'__storage__'</span>, &#123;&#125;)</div><div class="line">        object.__setattr__(self, <span class="string">'__ident_func__'</span>, get_ident)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> iter(self.__storage__.items())</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, proxy)</span>:</span></div><div class="line">        <span class="string">"""Create a proxy for a name."""</span></div><div class="line">        <span class="keyword">return</span> LocalProxy(self, proxy)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__release_local__</span><span class="params">(self)</span>:</span></div><div class="line">        self.__storage__.pop(self.__ident_func__(), <span class="keyword">None</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, name)</span>:</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="keyword">return</span> self.__storage__[self.__ident_func__()][name]</div><div class="line">        <span class="keyword">except</span> KeyError:</div><div class="line">            <span class="keyword">raise</span> AttributeError(name)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></div><div class="line">        ident = self.__ident_func__()</div><div class="line">        storage = self.__storage__</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            storage[ident][name] = value</div><div class="line">        <span class="keyword">except</span> KeyError:</div><div class="line">            storage[ident] = &#123;name: value&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delattr__</span><span class="params">(self, name)</span>:</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="keyword">del</span> self.__storage__[self.__ident_func__()][name]</div><div class="line">        <span class="keyword">except</span> KeyError:</div><div class="line">            <span class="keyword">raise</span> AttributeError(name)</div></pre></td></tr></table></figure>
+<p>接下来我们来看看Werkzeug实现的LocalStack 和 LocalProxy</p>
+<p>LocalStack是用Werkzeug.local.Local实现的stack结构, 实现了pop, push以及top(快速拿到栈顶元素)等方法, 这些所有的操作都只在本线程可见.<br>LocaLStack也可以被release_local函数释放掉当前线程下的状态(它也实现了<strong>release_local</strong>方法)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LocalStack</span><span class="params">(object)</span>:</span></div><div class="line"></div><div class="line">    <span class="string">"""This class works similar to a :class:`Local` but keeps a stack</span></div><div class="line">    of objects instead.  This is best explained with an example::</div><div class="line"></div><div class="line">        &gt;&gt;&gt; ls = LocalStack()</div><div class="line">        &gt;&gt;&gt; ls.push(42)</div><div class="line">        &gt;&gt;&gt; ls.top</div><div class="line">        42</div><div class="line">        &gt;&gt;&gt; ls.push(23)</div><div class="line">        &gt;&gt;&gt; ls.top</div><div class="line">        23</div><div class="line">        &gt;&gt;&gt; ls.pop()</div><div class="line">        23</div><div class="line">        &gt;&gt;&gt; ls.top</div><div class="line">        42</div><div class="line"></div><div class="line">    They can be force released by using a :class:`LocalManager` or with</div><div class="line">    the :func:`release_local` function but the correct way is to pop the</div><div class="line">    item from the stack after using.  When the stack is empty it will</div><div class="line">    no longer be bound to the current context (and as such released).</div><div class="line"></div><div class="line">    By calling the stack without arguments it returns a proxy that resolves to</div><div class="line">    the topmost item on the stack.</div><div class="line"></div><div class="line">    .. versionadded:: 0.6.1</div><div class="line">    """</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        self._local = Local()</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__release_local__</span><span class="params">(self)</span>:</span></div><div class="line">        self._local.__release_local__()</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_get__ident_func__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self._local.__ident_func__</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_set__ident_func__</span><span class="params">(self, value)</span>:</span></div><div class="line">        object.__setattr__(self._local, <span class="string">'__ident_func__'</span>, value)</div><div class="line">    __ident_func__ = property(_get__ident_func__, _set__ident_func__)</div><div class="line">    <span class="keyword">del</span> _get__ident_func__, _set__ident_func__</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">_lookup</span><span class="params">()</span>:</span></div><div class="line">            rv = self.top</div><div class="line">            <span class="keyword">if</span> rv <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">                <span class="keyword">raise</span> RuntimeError(<span class="string">'object unbound'</span>)</div><div class="line">            <span class="keyword">return</span> rv</div><div class="line">        <span class="keyword">return</span> LocalProxy(_lookup)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self, obj)</span>:</span></div><div class="line">        <span class="string">"""Pushes a new item to the stack"""</span></div><div class="line">        rv = getattr(self._local, <span class="string">'stack'</span>, <span class="keyword">None</span>)</div><div class="line">        <span class="keyword">if</span> rv <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">            self._local.stack = rv = []</div><div class="line">        rv.append(obj)</div><div class="line">        <span class="keyword">return</span> rv</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""Removes the topmost item from the stack, will return the</span></div><div class="line">        old value or `None` if the stack was already empty.</div><div class="line">        """</div><div class="line">        stack = getattr(self._local, <span class="string">'stack'</span>, <span class="keyword">None</span>)</div><div class="line">        <span class="keyword">if</span> stack <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">            <span class="keyword">return</span> <span class="keyword">None</span></div><div class="line">        <span class="keyword">elif</span> len(stack) == <span class="number">1</span>:</div><div class="line">            release_local(self._local)</div><div class="line">            <span class="keyword">return</span> stack[<span class="number">-1</span>]</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">return</span> stack.pop()</div><div class="line"></div><div class="line"><span class="meta">    @property</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">top</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""The topmost item on the stack.  If the stack is empty,</span></div><div class="line">        `None` is returned.</div><div class="line">        """</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="keyword">return</span> self._local.stack[<span class="number">-1</span>]</div><div class="line">        <span class="keyword">except</span> (AttributeError, IndexError):</div><div class="line">            <span class="keyword">return</span> <span class="keyword">None</span></div></pre></td></tr></table></figure></p>
+<p>LocalProxy则是一个典型的代理模式实现, LocalProxy接受一个callable的参数(比如一个函数)和一个string(可选), 这个参数被调用后本身应该是一个Werkzeug.local.Locald对象.<br>把这个对LocalProxy对象的所有操作, 包括属性访问, 方法调用, 甚至是二元操作都会转发到Werkzeug.local.Locald对象上, 并且设置这个这个对象的<strong>name</strong>=string</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@implements_bool</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LocalProxy</span><span class="params">(object)</span>:</span></div><div class="line"></div><div class="line">    <span class="string">"""Acts as a proxy for a werkzeug local.  Forwards all operations to</span></div><div class="line">    a proxied object.  The only operations not supported for forwarding</div><div class="line">    are right handed operands and any kind of assignment.</div><div class="line"></div><div class="line">    Example usage::</div><div class="line"></div><div class="line">        from werkzeug.local import Local</div><div class="line">        l = Local()</div><div class="line"></div><div class="line">        # these are proxies</div><div class="line">        request = l('request')</div><div class="line">        user = l('user')</div><div class="line"></div><div class="line"></div><div class="line">        from werkzeug.local import LocalStack</div><div class="line">        _response_local = LocalStack()</div><div class="line"></div><div class="line">        # this is a proxy</div><div class="line">        response = _response_local()</div><div class="line"></div><div class="line">    Whenever something is bound to l.user / l.request the proxy objects</div><div class="line">    will forward all operations.  If no object is bound a :exc:`RuntimeError`</div><div class="line">    will be raised.</div><div class="line"></div><div class="line">    To create proxies to :class:`Local` or :class:`LocalStack` objects,</div><div class="line">    call the object as shown above.  If you want to have a proxy to an</div><div class="line">    object looked up by a function, you can (as of Werkzeug 0.6.1) pass</div><div class="line">    a function to the :class:`LocalProxy` constructor::</div><div class="line"></div><div class="line">        session = LocalProxy(lambda: get_current_request().session)</div><div class="line"></div><div class="line">    .. versionchanged:: 0.6.1</div><div class="line">       The class can be instanciated with a callable as well now.</div><div class="line">    """</div></pre></td></tr></table></figure>
+<h4 id="wsgi-app"><a href="#wsgi-app" class="headerlink" title="wsgi_app"></a>wsgi_app</h4><ul>
+<li>第一步：生成request请求对象和请求上下文环境</li>
+<li>第二步：请求进入预处理，错误处理及请求转发到响应的过程</li>
+<li>第三步：请求分发 dispatch_request</li>
+<li>第四步：返回到wsgi_app内部</li>
+</ul>
+<p><img src="https://martin-upload.b0.upaiyun.com/web/2017/06/bf02aa078b9ba72d9fcda9b3b45125fd.jpeg" alt="示例图"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">wsgi_app</span><span class="params">(self, environ, start_response)</span>:</span></div><div class="line">    <span class="string">"""The actual WSGI application.  This is not implemented in</span></div><div class="line">    `__call__` so that middlewares can be applied without losing a</div><div class="line">    reference to the class.  So instead of doing this::</div><div class="line"></div><div class="line">        app = MyMiddleware(app)</div><div class="line"></div><div class="line">    It's a better idea to do this instead::</div><div class="line"></div><div class="line">        app.wsgi_app = MyMiddleware(app.wsgi_app)</div><div class="line"></div><div class="line">    Then you still have the original application object around and</div><div class="line">    can continue to call methods on it.</div><div class="line"></div><div class="line">    .. versionchanged:: 0.7</div><div class="line">       The behavior of the before and after request callbacks was changed</div><div class="line">       under error conditions and a new callback was added that will</div><div class="line">       always execute at the end of the request, independent on if an</div><div class="line">       error occurred or not.  See :ref:`callbacks-and-errors`.</div><div class="line"></div><div class="line">    :param environ: a WSGI environment</div><div class="line">    :param start_response: a callable accepting a status code,</div><div class="line">                           a list of headers and an optional</div><div class="line">                           exception context to start the response</div><div class="line">    """</div><div class="line">    ctx = self.request_context(environ)</div><div class="line">    ctx.push()</div><div class="line">    error = <span class="keyword">None</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            response = self.full_dispatch_request()</div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            error = e</div><div class="line">            response = self.make_response(self.handle_exception(e))</div><div class="line">        <span class="keyword">return</span> response(environ, start_response)</div><div class="line">    <span class="keyword">finally</span>:</div><div class="line">        <span class="keyword">if</span> self.should_ignore_error(error):</div><div class="line">            error = <span class="keyword">None</span></div><div class="line">        ctx.auto_pop(error)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, environ, start_response)</span>:</span></div><div class="line">    <span class="string">"""Shortcut for :attr:`wsgi_app`."""</span></div><div class="line">    <span class="keyword">return</span> self.wsgi_app(environ, start_response)</div></pre></td></tr></table></figure>
+<h4 id="应用上下文-AppContext"><a href="#应用上下文-AppContext" class="headerlink" title="应用上下文 AppContext"></a>应用上下文 AppContext</h4><p>应用上下文会在合适的时间创建和销毁, 它不会在线程中移动, 并且也不会在不同的请求之间共享, 所以它一般用来存储数据库连接信息或者别的东西的最佳位置.<br>当<code>app = Flask(__name__)</code>构造出一个Flask App的时候, AppContext并不会自动推入到_app_ctx_stack中,<br>如果你使用Flask-SQLAlchemy, 需要写一个离线脚本时候, 你就会知道这其中的坑(RuntimeError).<br>解决的办法是: 在运行离线脚本之前, 先将App的AppContext PUSH到_app_ctx_stack中, <code>ctx = app.app_context()  ctx.push()</code><br>但是当我们正常跑Flask服务的时候, 是不需要手动push. 推入部分的逻辑有这样一条：如果发现 _app_ctx_stack 为空，则隐式地推入一个AppContext。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">flask.globals.py</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_lookup_app_object</span><span class="params">(name)</span>:</span></div><div class="line">    top = _app_ctx_stack.top</div><div class="line">    <span class="keyword">if</span> top <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">        <span class="keyword">raise</span> RuntimeError(_app_ctx_err_msg)</div><div class="line">    <span class="keyword">return</span> getattr(top, name)</div><div class="line">    </div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_find_app</span><span class="params">()</span>:</span></div><div class="line">    top = _app_ctx_stack.top</div><div class="line">    <span class="keyword">if</span> top <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">        <span class="keyword">raise</span> RuntimeError(_app_ctx_err_msg)</div><div class="line">    <span class="keyword">return</span> top.app</div><div class="line"></div><div class="line">_app_ctx_stack = LocalStack()</div><div class="line">current_app = LocalProxy(_find_app)</div><div class="line">g = LocalProxy(partial(_lookup_app_object, <span class="string">'g'</span>))</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppContext</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="string">"""The application context binds an application object implicitly</span></div><div class="line">    to the current thread or greenlet, similar to how the</div><div class="line">    :class:`RequestContext` binds request information.  The application</div><div class="line">    context is also implicitly created if a request context is created</div><div class="line">    but the application is not on top of the individual application</div><div class="line">    context.</div><div class="line">    """</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, app)</span>:</span></div><div class="line">        self.app = app</div><div class="line">        self.url_adapter = app.create_url_adapter(<span class="keyword">None</span>)</div><div class="line">        self.g = app.app_ctx_globals_class()</div><div class="line"></div><div class="line">        <span class="comment"># Like request context, app contexts can be pushed multiple times</span></div><div class="line">        <span class="comment"># but there a basic "refcount" is enough to track them.</span></div><div class="line">        self._refcnt = <span class="number">0</span></div></pre></td></tr></table></figure>
+<h4 id="请求上下文-RequestContext"><a href="#请求上下文-RequestContext" class="headerlink" title="请求上下文 RequestContext"></a>请求上下文 RequestContext</h4><p>request和session都属于请求上下文<br>request 针对的是http请求作为对象<br>session 针对的是更多是用户信息作为对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_lookup_req_object</span><span class="params">(name)</span>:</span></div><div class="line">    top = _request_ctx_stack.top</div><div class="line">    <span class="keyword">if</span> top <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">        <span class="keyword">raise</span> RuntimeError(_request_ctx_err_msg)</div><div class="line">    <span class="keyword">return</span> getattr(top, name)</div><div class="line"></div><div class="line">_request_ctx_stack = LocalStack()</div><div class="line">request = LocalProxy(partial(_lookup_req_object, <span class="string">'request'</span>))</div><div class="line">session = LocalProxy(partial(_lookup_req_object, <span class="string">'session'</span>))</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RequestContext</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="string">"""The request context contains all request relevant information.  It is</span></div><div class="line">    created at the beginning of the request and pushed to the</div><div class="line">    `_request_ctx_stack` and removed at the end of it.  It will create the</div><div class="line">    URL adapter and request object for the WSGI environment provided.</div><div class="line"></div><div class="line">    Do not attempt to use this class directly, instead use</div><div class="line">    :meth:`~flask.Flask.test_request_context` and</div><div class="line">    :meth:`~flask.Flask.request_context` to create this object.</div><div class="line"></div><div class="line">    When the request context is popped, it will evaluate all the</div><div class="line">    functions registered on the application for teardown execution</div><div class="line">    (:meth:`~flask.Flask.teardown_request`).</div><div class="line"></div><div class="line">    The request context is automatically popped at the end of the request</div><div class="line">    for you.  In debug mode the request context is kept around if</div><div class="line">    exceptions happen so that interactive debuggers have a chance to</div><div class="line">    introspect the data.  With 0.4 this can also be forced for requests</div><div class="line">    that did not fail and outside of ``DEBUG`` mode.  By setting</div><div class="line">    ``'flask._preserve_context'`` to ``True`` on the WSGI environment the</div><div class="line">    context will not pop itself at the end of the request.  This is used by</div><div class="line">    the :meth:`~flask.Flask.test_client` for example to implement the</div><div class="line">    deferred cleanup functionality.</div><div class="line"></div><div class="line">    You might find this helpful for unittests where you need the</div><div class="line">    information from the context local around for a little longer.  Make</div><div class="line">    sure to properly :meth:`~werkzeug.LocalStack.pop` the stack yourself in</div><div class="line">    that situation, otherwise your unittests will leak memory.</div><div class="line">    """</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, app, environ, request=None)</span>:</span></div><div class="line">        self.app = app</div><div class="line">        <span class="keyword">if</span> request <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">            request = app.request_class(environ)</div><div class="line">        self.request = request</div><div class="line">        self.url_adapter = app.create_url_adapter(self.request)</div><div class="line">        self.flashes = <span class="keyword">None</span></div><div class="line">        self.session = <span class="keyword">None</span></div><div class="line"></div><div class="line">        <span class="comment"># Request contexts can be pushed multiple times and interleaved with</span></div><div class="line">        <span class="comment"># other request contexts.  Now only if the last level is popped we</span></div><div class="line">        <span class="comment"># get rid of them.  Additionally if an application context is missing</span></div><div class="line">        <span class="comment"># one is created implicitly so for each level we add this information</span></div><div class="line">        self._implicit_app_ctx_stack = []</div><div class="line"></div><div class="line">        <span class="comment"># indicator if the context was preserved.  Next time another context</span></div><div class="line">        <span class="comment"># is pushed the preserved context is popped.</span></div><div class="line">        self.preserved = <span class="keyword">False</span></div><div class="line"></div><div class="line">        <span class="comment"># remembers the exception for pop if there is one in case the context</span></div><div class="line">        <span class="comment"># preservation kicks in.</span></div><div class="line">        self._preserved_exc = <span class="keyword">None</span></div><div class="line"></div><div class="line">        <span class="comment"># Functions that should be executed after the request on the response</span></div><div class="line">        <span class="comment"># object.  These will be called before the regular "after_request"</span></div><div class="line">        <span class="comment"># functions.</span></div><div class="line">        self._after_request_functions = []</div><div class="line"></div><div class="line">        self.match_request()</div></pre></td></tr></table></figure>
+<h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><ul>
+<li><a href="http://www.pythondoc.com/flask/appcontext.html" target="_blank" rel="external">Flask 应用上下文</a></li>
+<li><a href="http://www.pythondoc.com/flask/reqcontext.html" target="_blank" rel="external">Flask 请求上下文</a></li>
+<li><a href="https://blog.tonyseek.com/post/the-context-mechanism-of-flask/" target="_blank" rel="external">Flask 的 Context 机制</a></li>
+<li><a href="http://www.jianshu.com/p/7a7efbb7205f" target="_blank" rel="external">Flask的Context(上下文)学习笔记</a></li>
+<li><a href="https://segmentfault.com/a/1190000008383197" target="_blank" rel="external">flask 源码解析：上下文</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/重点/" rel="tag"># 重点</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/27/http/" rel="next" title="HTTP的一些零散的知识点">
+                <i class="fa fa-chevron-left"></i> HTTP的一些零散的知识点
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/05/Werkzeug/" rel="prev" title="Werkzeug库简介">
+                Werkzeug库简介 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/favicon.jpg"
+               alt="Quinlan" />
+          <p class="site-author-name" itemprop="name">Quinlan</p>
+           
+              <p class="site-description motion-element" itemprop="description">程序员路上的点点滴滴</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Werkzeug-实现的-Local-Stack-和-Local-Proxy"><span class="nav-number">1.</span> <span class="nav-text">Werkzeug 实现的 Local Stack 和 Local Proxy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wsgi-app"><span class="nav-number">2.</span> <span class="nav-text">wsgi_app</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用上下文-AppContext"><span class="nav-number">3.</span> <span class="nav-text">应用上下文 AppContext</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求上下文-RequestContext"><span class="nav-number">4.</span> <span class="nav-text">请求上下文 RequestContext</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参考文献"><span class="nav-number">4.1.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Quinlan</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
