@@ -2,6 +2,7 @@ layout: three
 title: Python使用PIL破解验证码
 date: 2016-11-18 00:12:05
 tags: 重点
+comments: true
 ---
 ## 破解验证码DEMO
 本文原项目地址为[破解验证码](https://github.com/kouyalong/captcha_crack)，刷新请求不同的验证码，后台破解验证码同时把结果返回。

@@ -2,6 +2,7 @@ layout: sort_layout
 title: Python 实现八大排序
 date: 2017-05-24 18:16:05
 tags: 重点
+comments: true
 ---
 ### 排序算法
 

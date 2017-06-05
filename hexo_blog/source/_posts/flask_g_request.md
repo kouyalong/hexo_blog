@@ -2,6 +2,7 @@ layout: flask_g_request_layout
 title: Flask学习笔记第一篇之上下文
 date: 2017-06-02 13:26:05
 tags: 重点
+comments: true
 ---
 
 本文只是记录个人学习Flask上下文的一些理解. 关于上下文的理解和更多的信息, 可以参考最下方的参考文献!

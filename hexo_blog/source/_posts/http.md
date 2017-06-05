@@ -2,6 +2,7 @@ layout: http_layout
 title: HTTP的一些零散的知识点
 date: 2017-05-27 11:50:05
 tags: 重点
+comments: true
 ---
 
 #### 请求方式
