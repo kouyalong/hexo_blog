@@ -2,6 +2,7 @@ layout: four
 title: Mysql使用心得
 date: 2016-11-22 23:16:05
 tags: 重点
+comments: true
 ---
 # MYSQL
 MySql是一个快速、多线程、多用户的SQL数据库服务器。几乎是免费的，支持正规的SQL查询语言和采用多种数据类型，能对数据进行各种详细的查询等。
