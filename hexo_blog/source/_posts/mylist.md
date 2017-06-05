@@ -3,6 +3,8 @@ title: Python list的简单实现
 date: 2017-05-24 17:12:05
 tags: 重点
 comments: true
+categories: Python
+
 ---
 ### Python list的简单实现
 

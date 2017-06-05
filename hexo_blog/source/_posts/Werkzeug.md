@@ -3,6 +3,8 @@ title: Werkzeug库简介
 date: 2017-06-05 14:50:11
 tags: 重点
 comments: true
+categories: Python
+
 ---
 
 ### Werkzeug 库简介
@@ -54,7 +56,7 @@ if __name__ == '__main__':
     # run_simple('localhost', 5012, my_app_version2)
 ```
 
-#### 用Werkzeug构建一个简单的应用
+### 用Werkzeug构建一个简单的应用
 
 ```python
 class SimpleFlask(object):

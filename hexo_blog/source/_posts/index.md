@@ -3,6 +3,8 @@ title: index
 date: 2016-09-18 13:12:05
 tags: 普通
 comments: true
+categories: Python
+
 ---
 ### SimpleHttpServer 简单文件传输
 + python -m SimpleHTTPServer 
