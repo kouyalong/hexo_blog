@@ -10,7 +10,7 @@ categories: Python
 本文原项目地址为[破解验证码](https://github.com/kouyalong/captcha_crack)，刷新请求不同的验证码，后台破解验证码同时把结果返回。
 
 * 主要破解代码段
-```
+```python
 def break_image(image):
     """
     先把图片根据字符和空白RGB值，把图片转换成model=1的灰度模式
