@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://blog.micbay.com/2016/11/18/python_image/</loc>
+    <lastmod>2017-06-05T11:04:47.000Z</lastmod>
+    <data>
+        <display>
+        <title>Python使用PIL破解验证码</title>
+        <pubTime>2016-11-17T16:12:05.000Z</pubTime>
+        
+        <tag>重点</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="http://blog.micbay.com/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.micbay.com/2017/06/05/Werkzeug/</loc>
+    <lastmod>2017-06-05T11:04:47.000Z</lastmod>
+    <data>
+        <display>
+        <title>Werkzeug库简介</title>
+        <pubTime>2017-06-05T06:50:11.000Z</pubTime>
+        
+        <tag>重点</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="http://blog.micbay.com/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.micbay.com/2017/05/27/http/</loc>
+    <lastmod>2017-06-05T11:04:47.000Z</lastmod>
+    <data>
+        <display>
+        <title>HTTP的一些零散的知识点</title>
+        <pubTime>2017-05-27T03:50:05.000Z</pubTime>
+        
+        <tag>重点</tag>
+         
+         
+           
+             
+              <breadCrumb title="Http" url="http://blog.micbay.com/categories/Http/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.micbay.com/2016/09/18/index/</loc>
+    <lastmod>2017-06-05T11:04:47.000Z</lastmod>
+    <data>
+        <display>
+        <title>index</title>
+        <pubTime>2016-09-18T05:12:05.000Z</pubTime>
+        
+        <tag>普通</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="http://blog.micbay.com/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.micbay.com/2017/05/24/mylist/</loc>
+    <lastmod>2017-06-05T11:04:47.000Z</lastmod>
+    <data>
+        <display>
+        <title>Python list的简单实现</title>
+        <pubTime>2017-05-24T09:12:05.000Z</pubTime>
+        
+        <tag>重点</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="http://blog.micbay.com/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.micbay.com/2016/11/22/mysql/</loc>
+    <lastmod>2017-06-05T11:04:47.000Z</lastmod>
+    <data>
+        <display>
+        <title>Mysql使用心得</title>
+        <pubTime>2016-11-22T15:16:05.000Z</pubTime>
+        
+        <tag>重点</tag>
+         
+         
+           
+             
+              <breadCrumb title="Mysql" url="http://blog.micbay.com/categories/Mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.micbay.com/2017/06/02/flask_g_request/</loc>
+    <lastmod>2017-06-05T11:04:47.000Z</lastmod>
+    <data>
+        <display>
+        <title>Flask学习笔记第一篇之上下文</title>
+        <pubTime>2017-06-02T05:26:05.000Z</pubTime>
+        
+        <tag>重点</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="http://blog.micbay.com/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blog.micbay.com/2017/05/24/python_sort/</loc>
+    <lastmod>2017-06-05T11:04:47.000Z</lastmod>
+    <data>
+        <display>
+        <title>Python 实现八大排序</title>
+        <pubTime>2017-05-24T10:16:05.000Z</pubTime>
+        
+        <tag>重点</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="http://blog.micbay.com/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+    
+    
+</urlset>
