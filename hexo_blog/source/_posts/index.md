@@ -1,5 +1,5 @@
 layout: first_layout
-title: index
+title: 20160918随笔
 date: 2016-09-18 13:12:05
 tags: 普通
 comments: true
