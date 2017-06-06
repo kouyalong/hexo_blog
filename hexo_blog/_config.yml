@@ -6,11 +6,12 @@
 title: Quinlan的博客
 subtitle: Python小白
 description: 程序员路上的点点滴滴
-avatar: "/favicon.jpg"
+avatar: "https://martin-upload.b0.upaiyun.com/web/2017/04/9d341228a0d83ee982381d3438fbd518.jpg"
 email: mailto:kouyalong911@foxmail.com
 author: Quinlan
 language: zh-Hans
 timezone:
+since: 2016
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
