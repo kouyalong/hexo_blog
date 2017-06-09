@@ -58,6 +58,25 @@ if __name__ == '__main__':
 
 ### 用Werkzeug构建一个简单的应用
 
+首先我们构造一个最简单的WSGI Web 应用, 不实用Web框架的, 并且能在服务器上跑起来的:
+
+```python
+#!/usr/bin/env python
+# coding: utf-8
+from werkzeug.serving import run_simple
+
+
+def simple_app(environ, start_response):
+    print environ
+    start_response('200 OK', [('Content-Type', 'text/plain')])
+    return ['Hello world from a simple WSGI application!\n']
+
+
+run_simple('127.0.0.1', 5013, simple_app)
+```
+
+构建一个简单的Flask
+
 ```python
 class SimpleFlask(object):
 

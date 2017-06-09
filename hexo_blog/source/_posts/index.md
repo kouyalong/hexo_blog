@@ -6,6 +6,19 @@ comments: true
 categories: Python
 
 ---
+
+### 斐波那契数列
+```python
+# 递归
+def fib(n):
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fib(n-1) + fib(n-2)
+```
+
 ### SimpleHttpServer 简单文件传输
 + python -m SimpleHTTPServer 
 > 执行这个命令，就会在当前目录先启动一个简单的httpserver，在其他的服务器上通过ip+8000端口就可以下载到开启httpserver的服务器上当前目录下的文件,例如我在192.168.1.2的服务器上
