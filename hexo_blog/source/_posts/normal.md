@@ -39,8 +39,32 @@ fib = lambda n: 1 if n <= 2 else fib(n-1)+fib(n-2)
 
 
 #### 偏函数
+python的functools提供了partial, 可以让我们通过设定参数的默认值，可以降低函数调用的难度
+下面就是一个求一个数的number次方的例子
+
+```python
+#!/usr/bin/env python
+# coding: utf-8
+
+from functools import partial
+
+
+def square(n, number):
+    return n ** number
+
+
+new_square = partial(square, number=2)
+
+
+print square(9, 2)
+
+print new_square(9)
+```
 
 #### 迭代器
+
+##### 可迭代对象
+
 
 #### 生成器
 
