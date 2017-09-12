@@ -44,6 +44,11 @@ print bubble_sort([3, 6, 3, 44, 55, 11])
 * 算法实现:
 
 ```python
+"""
+按照连表第一个数为参照排序
+"""
+
+
 def quick_sort(seq, start_i, end_j):
     start = start_i
     end = end_j
@@ -63,6 +68,37 @@ def quick_sort(seq, start_i, end_j):
     return seq
 
 print quick_sort([3, 6, 3, 44, 55, 11], 0, 5)
+
+"""
+按照列表末尾的数为参照
+"""
+
+
+def quick_sort_end(seq, start_i, end_j):
+    start = start_i
+    end = end_j
+    print seq
+    if start >= end:
+        return seq
+    start_item = seq[end]
+    while start < end:
+        while start < end and seq[start] <= start_item:
+            start += 1
+        seq[end] = seq[start]
+        while start < end and seq[end] >= start_item:
+            end -= 1
+        seq[start] = seq[end]
+    seq[end] = start_item
+    print seq, start, end, start_item, 'main'
+    quick_sort_end(seq, start_i, start - 1)
+    quick_sort_end(seq, end + 1, end_j)
+    return seq
+
+quick_sort_list = [924, 194, 830, 508, 936, 211, 187, 663, 220, 286]
+print 'quick_end start'
+print quick_sort_end(quick_sort_list, 0, len(quick_sort_list)-1)
+print 'quick_end end'
+
 ```
 
 ##### 简单选择排序
