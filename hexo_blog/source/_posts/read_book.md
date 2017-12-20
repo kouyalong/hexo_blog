@@ -24,9 +24,13 @@ At Instagram, our bottleneck is development velocity, not pure code execution.
 - [经典的大数据问题](https://zhuanlan.zhihu.com/p/26897782)
 - [Python面试题长啥样？](https://zhuanlan.zhihu.com/p/21856569)
 - [关于Python的面试题](https://github.com/taizilongxu/interview_python)
+- [Fluent Python](http://www.pythondoc.com/pythontutorial3/appetite.html)
 - [Celery-3.1](http://docs.jinkan.org/docs/celery/)
 - [Redis](http://www.redis.cn/topics/introduction.html)
 - [Redis Sentinel机制与用法](https://segmentfault.com/a/1190000002680804)
+- [redis 源码分析](https://github.com/linyiqun/Redis-Code )
+- [Raft协议演示](http://thesecretlivesofdata.com/raft/)
+- [redis集群实现(五) sentinel的架构与raft协议](http://blog.csdn.net/sanwenyublog/article/details/53385616)
 
 ### [RESTful](http://restcookbook.com/)
 - [RESTful Web 服务：教程](https://zhuanlan.zhihu.com/p/21644769)
@@ -44,3 +48,8 @@ At Instagram, our bottleneck is development velocity, not pure code execution.
 - [Kubernetes系统架构简介](http://www.infoq.com/cn/articles/Kubernetes-system-architecture-introduction)
 - [《Kubernetes与云原生应用》系列之容器设计模式](http://www.infoq.com/cn/articles/kubernetes-and-cloud-native-app-container-design-pattern)
 - [《Kubernetes与云原生应用》系列之实践案例“单节点多容器模式](http://www.infoq.com/cn/articles/kubernetes-and-cloud-native-applications-part03)
+
+
+### 计算机科学
+- [Structure-And-Interpretation-Of-Computer-Programs](http://wecatch.me/structure-and-interpretation-of-computer-programs/book.html)
+- [负载均衡方法](http://www.open-open.com/lib/view/open1416560538742.html)
