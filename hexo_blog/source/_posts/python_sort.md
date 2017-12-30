@@ -6,6 +6,7 @@ comments: true
 categories: Python
 
 ---
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 ### 排序算法
 
 * 各种排序算法
@@ -165,11 +166,37 @@ print insert_sort([3, 6, 3, 44, 55, 11])
 
 * 基本思想:
 
-* 时间复杂度:
+* 时间复杂度: 
+```math
+O(nlg_n$)
+
+$$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$
+\\(x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}\\)
+```
 
 * 算法实现:
 
-```
+```python
+# coding: utf-8
+
+
+def merge_sort(seq):
+    mid = len(seq) / 2
+    left, right = seq[:mid], seq[mid:]
+    if len(left) > 1: left = merge_sort(left)
+    if len(right) > 1: right = merge_sort(right)
+    res = []
+    while left and right:
+        if left[-1] >= right[-1]:
+            res.append(left.pop())
+        else:
+            res.append(right.pop())
+    res.reverse()
+    return (left or right) + res
+
+desc_seq = [28, 12, 33, 22, 10, 39, 31, 9, 17]
+print merge_sort(desc_seq)
+
 ```
 
 ##### 堆排序
