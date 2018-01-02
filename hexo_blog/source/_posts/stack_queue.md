@@ -101,11 +101,11 @@ class QueueInfo(object):
 
     def pop(self):
         ret = None
-        if self.front:
-            ret = self.front.node
+        if self.rear:
+            ret = self.rear.node
             if self.front == self.rear:
-                self.rear = None
-            self.front = self.front.next_node
+                self.front = None
+            self.rear = self.rear.next_node
             self.size -= 1
         return ret
 
@@ -117,8 +117,8 @@ class QueueInfo(object):
             self.rear = new_node
             self.front = new_node
         else:
-            self.rear.next_node = new_node
-            self.rear = new_node
+            self.front.next_node = new_node
+            self.front = new_node
         self.size += 1
 
 ```
