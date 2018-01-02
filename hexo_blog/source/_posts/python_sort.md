@@ -124,6 +124,17 @@ def select_sort(seq):
     return seq
 
 print select_sort([3, 6, 3, 44, 55, 11])
+
+
+# 递归版本：
+def select_sort_rec(seq, i):
+    if i == 0: return 
+    max_j = i
+    for j in range(i):
+        if seq[j] > seq[max_j]: max_j = j
+    seq[i], seq[max_j] = seq[max_j], seq[i]
+    select_sort_rec(seq, i-1)
+
 ```
 
 
@@ -149,6 +160,17 @@ def insert_sort(seq):
     return seq
 
 print insert_sort([3, 6, 3, 44, 55, 11])
+
+
+# 递归版本
+def insert_sort_rec(seq, i):
+    if i == 0: return 
+    insert_sort_rec(seq, i-1)
+    j = i
+    while j > 0 and seq[j-1] > seq[j]:
+        seq[j-1], seq[j] = seq[j], seq[j-1]
+        j -= 1
+
 ```
 
 ##### 希尔排序
