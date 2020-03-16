@@ -6,7 +6,7 @@
 favicon: /favicon.ico
 
 # Set default keywords (Use a comma to separate)
-keywords: "Quinlan的博客, 寇亚龙"
+keywords: "Quinlan的博客, 寇亚龙, kouyalong, micbay"
 
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link.
@@ -32,7 +32,7 @@ copyright: true
 canonical: true
 
 # Change headers hierarchy on site-subtitle (will be main site description) and on all post/pages titles for better SEO-optimization.
-seo: false
+seo: true
 
 # If true, will add site-subtitle to index page, added in main hexo config.
 # subtitle: Subtitle
@@ -216,6 +216,8 @@ links_layout: block
 links:
   微车主页: http://weiche.me/
   ASO100: https://aso100.com/
+  旷视科技: https://www.megvii.com/
+  更美APP: https://www.igengmei.com/
 
 
 # ---------------------------------------------------------------
@@ -255,7 +257,7 @@ post_wordcount:
 # Wechat Subscriber
 wechat_subscriber:
   enabled: true
-  qcode: "https://martin-upload.b0.upaiyun.com/web/2017/05/1cb89e5695f1c44a2ccf2896c1231603.jpg"
+  qcode: /images/ggj_er.jpg
   description: 欢迎关注我的微信公众号！
 
 # Declare license on posts
