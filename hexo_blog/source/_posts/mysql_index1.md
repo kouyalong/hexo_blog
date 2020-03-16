@@ -1,3 +1,12 @@
+layout: mysql_index1_layout
+title: Mysql的innodb存储引擎RR隔离级别mvcc、next-key locks和幻读关系
+date: 2020-03-16 11:50:05
+tags: 重点
+comments: true
+categories: Mysql
+
+---
+
 #### 一、InnoDB四种事务隔离级别
 ![](/images/mysql1.png)
 
